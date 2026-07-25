@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>誠信抉擇：文化局工程倫理小遊戲</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-root">
+
+  <canvas id="gameCanvas" width="720" height="468"></canvas>
+
+  <div id="ui-overlay">
+
+    <div id="panel-status" class="panel">
+      <div class="status-header">
+        <img id="playerPortrait" class="portrait-thumb hidden" alt="">
+        <div class="panel-title" id="playerName">新進承辦人</div>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">誠信度</span>
+      </div>
+      <div class="bar-track">
+        <div id="integrityBar" class="bar-fill"></div>
+      </div>
+      <div id="integrityValue" class="bar-value">70 / 100</div>
+    </div>
+
+    <div id="panel-quest" class="panel">
+      <div class="panel-title">目前任務</div>
+      <div id="questTitle" class="quest-title">—</div>
+      <div id="questDesc" class="quest-desc">—</div>
+    </div>
+
+    <div id="panel-minimap" class="panel">
+      <div class="panel-title" id="mapName">文化局辦公室</div>
+      <div id="minimapBody" class="minimap-body"></div>
+    </div>
+
+    <div id="panel-controls" class="panel">
+      <div class="ctrl-row"><span class="key">W A S D</span> 移動</div>
+      <div class="ctrl-row"><span class="key">E</span> 互動 / 對話</div>
+    </div>
+
+    <div id="panel-inventory" class="panel">
+      <div class="panel-title">隨身物品</div>
+      <div id="inventoryBody" class="inventory-body"></div>
+    </div>
+
+    <div id="panel-dialogue" class="panel hidden">
+      <div class="dialogue-body">
+        <img id="dialoguePortrait" class="dialogue-portrait hidden" alt="">
+        <div class="dialogue-content">
+          <div class="dialogue-speaker" id="dialogueSpeaker">—</div>
+          <div class="dialogue-text" id="dialogueText">—</div>
+          <div class="dialogue-choices" id="dialogueChoices"></div>
+          <div class="dialogue-continue hidden" id="dialogueContinue">▶ 按空白鍵或點擊繼續</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="intro-overlay" class="overlay">
+    <div class="overlay-box">
+      <h1>誠信抉擇</h1>
+      <h2>文化局工程倫理小遊戲</h2>
+      <p>你是文化局新進的業務承辦人。在文化局裡走動、找同仁與廠商聊聊，過程中你會遇到一些不確定該怎麼辦的時刻——</p>
+      <p>政風室的小風隨時歡迎你去聊聊，遇到疑慮，先問不吃虧。</p>
+      <p>選一個案件開始：</p>
+      <div class="case-select">
+        <button class="game-btn case-btn" data-case="case1">案件一：古蹟修復工程</button>
+        <button class="game-btn case-btn" data-case="case2">案件二：特展設備採購</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="ending-overlay" class="overlay hidden">
+    <div class="overlay-box">
+      <h1 id="endingTitle">結局</h1>
+      <p id="endingText">—</p>
+      <p id="endingScore" class="ending-score">—</p>
+      <button id="restartBtn" class="game-btn">重新遊玩</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/data.js?v=27"></script>
+<script src="js/engine.js?v=27"></script>
+<script src="js/game.js?v=27"></script>
+</body>
+</html>
