@@ -4,12 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>誠信抉擇：文化局工程倫理小遊戲</title>
-<link rel="stylesheet" href="style.css?v=32">
+<link rel="stylesheet" href="style.css?v=34">
 </head>
 <body>
 <div id="game-root">
 
-  <canvas id="gameCanvas" width="720" height="468"></canvas>
+  <div id="scene-view">
+    <canvas id="gameCanvas" width="720" height="468"></canvas>
+
+    <div id="touch-controls">
+      <div class="touch-joystick" id="touchJoystickBase">
+        <div class="touch-joystick-knob" id="touchJoystickKnob"></div>
+      </div>
+      <button class="touch-btn touch-interact" id="touchInteractBtn">對話</button>
+    </div>
+  </div>
 
   <div id="ui-overlay">
 
@@ -62,13 +71,6 @@
 
   </div>
 
-  <div id="touch-controls">
-    <div class="touch-joystick" id="touchJoystickBase">
-      <div class="touch-joystick-knob" id="touchJoystickKnob"></div>
-    </div>
-    <button class="touch-btn touch-interact" id="touchInteractBtn">對話</button>
-  </div>
-
   <div id="intro-overlay" class="overlay">
     <div class="overlay-box">
       <h1>誠信抉擇</h1>
@@ -94,8 +96,8 @@
 
 </div>
 
-<script src="js/data.js?v=32"></script>
-<script src="js/engine.js?v=32"></script>
-<script src="js/game.js?v=32"></script>
+<script src="js/data.js?v=34"></script>
+<script src="js/engine.js?v=34"></script>
+<script src="js/game.js?v=34"></script>
 </body>
 </html>

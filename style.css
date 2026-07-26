@@ -26,8 +26,7 @@ body {
 
 #game-root {
   position: relative;
-  width: 720px;
-  height: 468px;
+  width: min(94vw, 1100px);
   flex-shrink: 0;
   border-radius: 14px;
   overflow: hidden;
@@ -35,11 +34,19 @@ body {
   background: #000;
 }
 
+/* 場景本身（畫布 + 觸控鍵）維持 720:468 比例，寬度跟著 game-root 走 */
+#scene-view {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 720 / 468;
+  background: #000;
+}
+
 canvas#gameCanvas {
   display: block;
-  width: 720px;
-  height: 468px;
-  image-rendering: pixelated;
+  width: 100%;
+  height: 100%;
+  image-rendering: auto;
 }
 
 #ui-overlay {
@@ -298,12 +305,13 @@ canvas#gameCanvas {
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(5, 7, 12, 0.92);
+  background: rgba(5, 7, 12, 0.98);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
   pointer-events: auto;
+  overflow-y: auto;
 }
 .overlay.hidden { display: none; }
 .overlay-box {
@@ -425,5 +433,40 @@ canvas#gameCanvas {
   font-weight: 700;
   background: rgba(126, 200, 255, 0.25);
   border: 1px solid rgba(126, 200, 255, 0.55);
+}
+
+/* ---- 小螢幕：UI 面板不跟著場景縮小，改成一般網頁排版往下疊，文字/按鈕維持正常大小 ---- */
+@media (max-width: 720px) {
+  body { padding: 0; gap: 0; }
+  #game-root {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  #ui-overlay {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 10px 24px;
+    pointer-events: auto;
+  }
+  .panel {
+    position: static !important;
+    width: 100% !important;
+    transform: none !important;
+    padding: 10px 14px;
+  }
+  #panel-dialogue { order: 1; }
+  #panel-quest { order: 2; }
+  #panel-status { order: 3; }
+  #panel-inventory { order: 4; }
+  #panel-minimap { order: 5; }
+  #panel-status .stat-row, #panel-status .bar-value { font-size: 13px; }
+  .quest-title { font-size: 14px; }
+  .quest-desc { font-size: 13px; }
+  .dialogue-speaker { font-size: 15px; }
+  .dialogue-text { font-size: 14px; }
+  .choice-btn { font-size: 13px; padding: 10px 12px; }
 }
 .touch-interact:active { background: rgba(126, 200, 255, 0.5); }

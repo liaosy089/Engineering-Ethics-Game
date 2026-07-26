@@ -6,7 +6,15 @@ let state = null;
 let keys = {};
 let keysEdge = {};
 let transitionCooldown = 0;
-const ctx = document.getElementById("gameCanvas").getContext("2d");
+const gameCanvasEl = document.getElementById("gameCanvas");
+const ctx = gameCanvasEl.getContext("2d");
+
+// 畫布的 CSS 顯示尺寸是彈性的（手機縮小、桌機放大到 1100px 寬），
+// 但實際繪圖解析度固定拉高 2 倍，畫面放大時才不會糊掉。
+const CANVAS_RENDER_SCALE = 2;
+gameCanvasEl.width = CANVAS_W * CANVAS_RENDER_SCALE;
+gameCanvasEl.height = CANVAS_H * CANVAS_RENDER_SCALE;
+ctx.scale(CANVAS_RENDER_SCALE, CANVAS_RENDER_SCALE);
 
 // ---------------- 效果輔助函式（供 data.js 對話節點呼叫）----------------
 
@@ -397,19 +405,6 @@ document.getElementById("restartBtn").addEventListener("click", () => {
   location.reload();
 });
 
-// ---------------- 響應式縮放（手機/小螢幕）----------------
-
-function fitGameRoot() {
-  const root = document.getElementById("game-root");
-  const margin = 16;
-  const availW = window.innerWidth - margin * 2;
-  const availH = window.innerHeight - margin * 2;
-  const scale = Math.min(1.7, availW / CANVAS_W, availH / CANVAS_H);
-  root.style.zoom = scale;
-}
-window.addEventListener("resize", fitGameRoot);
-window.addEventListener("orientationchange", fitGameRoot);
-fitGameRoot();
 
 // ---------------- 觸控操作（搖桿）----------------
 
