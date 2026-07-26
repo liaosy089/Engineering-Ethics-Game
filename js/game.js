@@ -258,6 +258,7 @@ function showEnding() {
   document.getElementById("endingText").textContent = info.text + note;
   document.getElementById("endingScore").textContent = `最終誠信度：${state.integrity} / 100`;
   document.getElementById("ending-overlay").classList.remove("hidden");
+  document.getElementById("touch-controls").classList.remove("in-game");
 }
 
 // ---------------- UI 更新 ----------------
@@ -386,6 +387,7 @@ function startGame(caseId) {
   updateAllUI();
   setPortrait(document.getElementById("playerPortrait"), "player");
   document.getElementById("intro-overlay").classList.add("hidden");
+  document.getElementById("touch-controls").classList.add("in-game");
 }
 
 document.querySelectorAll(".case-btn").forEach((btn) => {
@@ -400,12 +402,9 @@ document.getElementById("restartBtn").addEventListener("click", () => {
 function fitGameRoot() {
   const root = document.getElementById("game-root");
   const margin = 16;
-  const touchControls = document.getElementById("touch-controls");
-  const shown = touchControls && getComputedStyle(touchControls).display !== "none";
-  const touchH = shown ? touchControls.getBoundingClientRect().height + 16 : 0;
   const availW = window.innerWidth - margin * 2;
-  const availH = window.innerHeight - margin * 2 - touchH;
-  const scale = Math.min(1, availW / CANVAS_W, availH / CANVAS_H);
+  const availH = window.innerHeight - margin * 2;
+  const scale = Math.min(1.7, availW / CANVAS_W, availH / CANVAS_H);
   root.style.zoom = scale;
 }
 window.addEventListener("resize", fitGameRoot);

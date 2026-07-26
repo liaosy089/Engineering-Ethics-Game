@@ -5,31 +5,31 @@
 // ---- 角色美術（頭像）----
 // 尚未提供圖檔的角色會自動 fallback 為無頭像，不影響遊戲運作。
 const PORTRAITS = {
-  player: "assets/characters/player.png",
-  xiaofeng: "assets/characters/xiaofeng.png",
-  chief: "assets/characters/chief.png",
-  colleague: "assets/characters/colleague.png",
-  supervisor: "assets/characters/supervisor.png",
-  contractor: "assets/characters/contractor.png",
-  historian: "assets/characters/historian.png",
-  vendor: "assets/characters/vendor.png",
-  committee: "assets/characters/committee.png",
-  rival: "assets/characters/rival.png",
+  player: "assets/characters/player.jpg",
+  xiaofeng: "assets/characters/xiaofeng.jpg",
+  chief: "assets/characters/chief.jpg",
+  colleague: "assets/characters/colleague.jpg",
+  supervisor: "assets/characters/supervisor.jpg",
+  contractor: "assets/characters/contractor.jpg",
+  historian: "assets/characters/historian.jpg",
+  vendor: "assets/characters/vendor.jpg",
+  committee: "assets/characters/committee.jpg",
+  rival: "assets/characters/rival.jpg",
 };
 
 // ---- 角色美術（Q版全身立繪，選用）----
 // 提供了就用全身立繪站在場景裡（自動去除白底），沒提供就退回頭像圓牌，不影響遊戲運作。
 const SPRITES = {
-  player: "assets/characters/sprites/player.png",
-  xiaofeng: "assets/characters/sprites/xiaofeng.png",
-  chief: "assets/characters/sprites/chief.png",
-  colleague: "assets/characters/sprites/colleague.png",
-  supervisor: "assets/characters/sprites/supervisor.png",
-  contractor: "assets/characters/sprites/contractor.png",
-  historian: "assets/characters/sprites/historian.png",
-  vendor: "assets/characters/sprites/vendor.png",
-  committee: "assets/characters/sprites/committee.png",
-  rival: "assets/characters/sprites/rival.png",
+  player: "assets/characters/sprites/player.jpg",
+  xiaofeng: "assets/characters/sprites/xiaofeng.jpg",
+  chief: "assets/characters/sprites/chief.jpg",
+  colleague: "assets/characters/sprites/colleague.jpg",
+  supervisor: "assets/characters/sprites/supervisor.jpg",
+  contractor: "assets/characters/sprites/contractor.jpg",
+  historian: "assets/characters/sprites/historian.jpg",
+  vendor: "assets/characters/sprites/vendor.jpg",
+  committee: "assets/characters/sprites/committee.jpg",
+  rival: "assets/characters/sprites/rival.jpg",
 };
 
 // ---- 場景：單張背景圖 + 可走動範圍(貼合透視的梯形) + 固定站位 ----
@@ -39,7 +39,7 @@ const SPRITES = {
 const SCENES = {
   office: {
     label: "文化局辦公室",
-    background: "assets/backgrounds/office.png",
+    background: "assets/backgrounds/office.jpg",
     floor: { yTop: 210, yBottom: 445, topLeftX: 200, topRightX: 600, bottomLeftX: 20, bottomRightX: 700 },
     playerSpawn: { x: 260, y: 410 },
     exit: { x: 480, y: 395, w: 80, h: 60, target: "case_field" },
@@ -52,7 +52,7 @@ const SCENES = {
   },
   site: {
     label: "古蹟修復工地",
-    background: "assets/backgrounds/site.png",
+    background: "assets/backgrounds/site.jpg",
     // 這張圖的石板路是從左下往右上斜切收窄的透視，右半邊多半是圍籬跟建築，
     // 梯形跟著實際路面走，不是左右對稱的通道。
     floor: { yTop: 255, yBottom: 442, topLeftX: 10, topRightX: 185, bottomLeftX: 10, bottomRightX: 470 },
@@ -69,7 +69,7 @@ const SCENES = {
   },
   exhibition: {
     label: "特展布展現場",
-    background: "assets/backgrounds/exhibition.png",
+    background: "assets/backgrounds/exhibition.jpg",
     floor: { yTop: 220, yBottom: 445, topLeftX: 150, topRightX: 600, bottomLeftX: 20, bottomRightX: 700 },
     playerSpawn: { x: 260, y: 410 },
     exit: { x: 480, y: 395, w: 80, h: 60, target: "office" },

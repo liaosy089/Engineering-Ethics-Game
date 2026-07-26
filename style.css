@@ -186,12 +186,15 @@ canvas#gameCanvas {
   background: #ff9d5c;
 }
 
-/* controls hint: bottom-right, small */
+/* controls hint: bottom-right, small (沒有鍵盤的觸控裝置用不到，隱藏) */
 #panel-controls {
   bottom: 12px;
   right: 12px;
   font-size: 10px;
   color: #aab3c2;
+}
+@media (hover: none) and (pointer: coarse) {
+  #panel-controls { display: none; }
 }
 .ctrl-row { margin: 2px 0; }
 .key {
@@ -358,46 +361,48 @@ canvas#gameCanvas {
 
 .hidden { display: none !important; }
 
-/* ---- 觸控操作（只在觸控裝置顯示，滑鼠裝置隱藏）---- */
+/* ---- 觸控操作：疊在畫面上，只在觸控裝置 + 實際遊戲中（非首頁/結局）顯示 ---- */
 #touch-controls {
   display: none;
-  width: 100%;
-  max-width: 480px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
 }
 @media (hover: none) and (pointer: coarse) {
-  #touch-controls { display: flex; }
+  #touch-controls.in-game { display: block; }
 }
 .touch-joystick {
-  position: relative;
-  width: 116px;
-  height: 116px;
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.08);
+  background: rgba(20, 24, 32, 0.38);
   border: 1px solid rgba(255,255,255,0.22);
   touch-action: none;
+  pointer-events: auto;
 }
 .touch-joystick-knob {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 52px;
-  height: 52px;
-  margin: -26px 0 0 -26px;
+  width: 42px;
+  height: 42px;
+  margin: -21px 0 0 -21px;
   border-radius: 50%;
-  background: rgba(126, 200, 255, 0.35);
-  border: 1px solid rgba(126, 200, 255, 0.65);
+  background: rgba(126, 200, 255, 0.4);
+  border: 1px solid rgba(126, 200, 255, 0.7);
   transition: background 0.1s ease;
 }
 .touch-joystick.active .touch-joystick-knob {
-  background: rgba(126, 200, 255, 0.55);
+  background: rgba(126, 200, 255, 0.6);
 }
 .touch-btn {
-  background: rgba(255,255,255,0.1);
+  background: rgba(20, 24, 32, 0.38);
   border: 1px solid rgba(255,255,255,0.22);
   border-radius: 12px;
   color: #fff;
@@ -406,15 +411,19 @@ canvas#gameCanvas {
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
-.touch-btn:active { background: rgba(126, 200, 255, 0.3); }
+.touch-btn:active { background: rgba(126, 200, 255, 0.35); }
 .touch-interact {
-  width: 84px;
-  height: 84px;
+  position: absolute;
+  right: 14px;
+  bottom: 26px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700;
-  background: rgba(126, 200, 255, 0.22);
-  border: 1px solid rgba(126, 200, 255, 0.5);
+  background: rgba(126, 200, 255, 0.25);
+  border: 1px solid rgba(126, 200, 255, 0.55);
 }
-.touch-interact:active { background: rgba(126, 200, 255, 0.45); }
+.touch-interact:active { background: rgba(126, 200, 255, 0.5); }
