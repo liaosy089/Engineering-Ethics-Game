@@ -98,7 +98,7 @@ window.addEventListener("keydown", (e) => {
   keys[k] = true;
 
   if (state && state.dialogue) {
-    if (k === " " || k === "enter") handleDialogueAdvance();
+    if (k === " " || k === "enter" || k === "e") handleDialogueAdvance();
     if (["1", "2", "3", "4"].includes(k)) handleChoiceKey(parseInt(k, 10) - 1);
   }
 });
@@ -107,23 +107,33 @@ window.addEventListener("keyup", (e) => {
 });
 
 function updateMovement() {
-  let dx = 0, dy = 0;
-  if (keys["w"] || keys["arrowup"]) dy = -1;
-  if (keys["s"] || keys["arrowdown"]) dy = 1;
-  if (keys["a"] || keys["arrowleft"]) dx = -1;
-  if (keys["d"] || keys["arrowright"]) dx = 1;
+  let dx = 0, dy = 0, mag = 1;
 
-  state.player.moving = dx !== 0 || dy !== 0;
+  if (touchJoystick.active) {
+    dx = touchJoystick.dx;
+    dy = touchJoystick.dy;
+    mag = Math.min(1, Math.hypot(dx, dy));
+  } else {
+    if (keys["w"] || keys["arrowup"]) dy = -1;
+    if (keys["s"] || keys["arrowdown"]) dy = 1;
+    if (keys["a"] || keys["arrowleft"]) dx = -1;
+    if (keys["d"] || keys["arrowright"]) dx = 1;
+  }
+
+  const len = Math.hypot(dx, dy) || 1;
+  dx /= len;
+  dy /= len;
+
+  state.player.moving = mag > 0.08 && (dx !== 0 || dy !== 0);
   if (state.player.moving) {
-    if (dx < 0) state.player.dir = "left";
-    else if (dx > 0) state.player.dir = "right";
+    if (dx < -0.3) state.player.dir = "left";
+    else if (dx > 0.3) state.player.dir = "right";
     else if (dy < 0) state.player.dir = "up";
     else if (dy > 0) state.player.dir = "down";
 
-    const len = Math.hypot(dx, dy) || 1;
-    const speed = 3.8;
-    const nx = state.player.x + (dx / len) * speed;
-    const ny = state.player.y + (dy / len) * speed;
+    const speed = 3.8 * mag;
+    const nx = state.player.x + dx * speed;
+    const ny = state.player.y + dy * speed;
     const pos = clampToFloor(state.map, nx, ny);
     state.player.x = pos.x;
     state.player.y = pos.y;
@@ -383,6 +393,89 @@ document.querySelectorAll(".case-btn").forEach((btn) => {
 });
 document.getElementById("restartBtn").addEventListener("click", () => {
   location.reload();
+});
+
+// ---------------- 響應式縮放（手機/小螢幕）----------------
+
+function fitGameRoot() {
+  const root = document.getElementById("game-root");
+  const margin = 16;
+  const touchControls = document.getElementById("touch-controls");
+  const shown = touchControls && getComputedStyle(touchControls).display !== "none";
+  const touchH = shown ? touchControls.getBoundingClientRect().height + 16 : 0;
+  const availW = window.innerWidth - margin * 2;
+  const availH = window.innerHeight - margin * 2 - touchH;
+  const scale = Math.min(1, availW / CANVAS_W, availH / CANVAS_H);
+  root.style.zoom = scale;
+}
+window.addEventListener("resize", fitGameRoot);
+window.addEventListener("orientationchange", fitGameRoot);
+fitGameRoot();
+
+// ---------------- 觸控操作（搖桿）----------------
+
+const touchJoystick = { active: false, dx: 0, dy: 0 };
+
+(function setupJoystick() {
+  const base = document.getElementById("touchJoystickBase");
+  const knob = document.getElementById("touchJoystickKnob");
+  const maxDist = 40;
+  let baseRect = null;
+
+  function pointFromEvent(e) {
+    return e.touches && e.touches.length ? e.touches[0] : e;
+  }
+
+  function start(e) {
+    e.preventDefault();
+    baseRect = base.getBoundingClientRect();
+    touchJoystick.active = true;
+    base.classList.add("active");
+    move(e);
+  }
+  function move(e) {
+    if (!touchJoystick.active) return;
+    e.preventDefault();
+    const p = pointFromEvent(e);
+    const cx = baseRect.left + baseRect.width / 2;
+    const cy = baseRect.top + baseRect.height / 2;
+    let dx = p.clientX - cx;
+    let dy = p.clientY - cy;
+    const dist = Math.hypot(dx, dy);
+    if (dist > maxDist) {
+      dx = (dx / dist) * maxDist;
+      dy = (dy / dist) * maxDist;
+    }
+    knob.style.transform = `translate(${dx}px, ${dy}px)`;
+    touchJoystick.dx = dx / maxDist;
+    touchJoystick.dy = dy / maxDist;
+  }
+  function end(e) {
+    e.preventDefault();
+    touchJoystick.active = false;
+    touchJoystick.dx = 0;
+    touchJoystick.dy = 0;
+    base.classList.remove("active");
+    knob.style.transform = "translate(0, 0)";
+  }
+
+  base.addEventListener("touchstart", start, { passive: false });
+  base.addEventListener("touchmove", move, { passive: false });
+  base.addEventListener("touchend", end, { passive: false });
+  base.addEventListener("touchcancel", end, { passive: false });
+})();
+
+function handleTouchInteract() {
+  if (state && state.dialogue) {
+    const node = currentNode();
+    if (!(node.choices && node.choices.length)) handleDialogueAdvance();
+  } else if (state) {
+    tryInteract();
+  }
+}
+document.getElementById("touchInteractBtn").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  handleTouchInteract();
 });
 
 requestAnimationFrame(loop);

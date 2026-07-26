@@ -2,9 +2,9 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>誠信抉擇：文化局工程倫理小遊戲</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=29">
 </head>
 <body>
 <div id="game-root">
@@ -55,7 +55,7 @@
           <div class="dialogue-speaker" id="dialogueSpeaker">—</div>
           <div class="dialogue-text" id="dialogueText">—</div>
           <div class="dialogue-choices" id="dialogueChoices"></div>
-          <div class="dialogue-continue hidden" id="dialogueContinue">▶ 按空白鍵或點擊繼續</div>
+          <div class="dialogue-continue hidden" id="dialogueContinue">▶ 按空白鍵／E 或點擊繼續</div>
         </div>
       </div>
     </div>
@@ -87,8 +87,15 @@
 
 </div>
 
-<script src="js/data.js?v=27"></script>
-<script src="js/engine.js?v=27"></script>
-<script src="js/game.js?v=27"></script>
+<div id="touch-controls">
+  <div class="touch-joystick" id="touchJoystickBase">
+    <div class="touch-joystick-knob" id="touchJoystickKnob"></div>
+  </div>
+  <button class="touch-btn touch-interact" id="touchInteractBtn">對話</button>
+</div>
+
+<script src="js/data.js?v=30"></script>
+<script src="js/engine.js?v=30"></script>
+<script src="js/game.js?v=30"></script>
 </body>
 </html>

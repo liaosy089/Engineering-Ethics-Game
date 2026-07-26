@@ -5,18 +5,30 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
   background: #0d1117;
   font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   color: #f0f2f5;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 12px;
+  padding: 12px 0;
+  touch-action: manipulation;
 }
 
 #game-root {
   position: relative;
   width: 720px;
   height: 468px;
-  margin: 24px auto;
+  flex-shrink: 0;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
@@ -345,3 +357,64 @@ canvas#gameCanvas {
 }
 
 .hidden { display: none !important; }
+
+/* ---- 觸控操作（只在觸控裝置顯示，滑鼠裝置隱藏）---- */
+#touch-controls {
+  display: none;
+  width: 100%;
+  max-width: 480px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+@media (hover: none) and (pointer: coarse) {
+  #touch-controls { display: flex; }
+}
+.touch-joystick {
+  position: relative;
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.22);
+  touch-action: none;
+}
+.touch-joystick-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  border-radius: 50%;
+  background: rgba(126, 200, 255, 0.35);
+  border: 1px solid rgba(126, 200, 255, 0.65);
+  transition: background 0.1s ease;
+}
+.touch-joystick.active .touch-joystick-knob {
+  background: rgba(126, 200, 255, 0.55);
+}
+.touch-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.touch-btn:active { background: rgba(126, 200, 255, 0.3); }
+.touch-interact {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 700;
+  background: rgba(126, 200, 255, 0.22);
+  border: 1px solid rgba(126, 200, 255, 0.5);
+}
+.touch-interact:active { background: rgba(126, 200, 255, 0.45); }
