@@ -10,7 +10,7 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>誠信抉擇：文化局工程倫理小遊戲</title>
-<link rel="stylesheet" href="style.css?v=34">
+<link rel="stylesheet" href="style.css?v=35">
 </head>
 <body>
 <div id="game-root">
@@ -83,11 +83,15 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
       <h2>文化局工程倫理小遊戲</h2>
       <p>你是文化局新進的業務承辦人。在文化局裡走動、找同仁與廠商聊聊，過程中你會遇到一些不確定該怎麼辦的時刻——</p>
       <p>政風室的小風隨時歡迎你去聊聊，遇到疑慮，先問不吃虧。</p>
-      <p>選一個案件開始：</p>
+      <p class="warn-text">⚠️ 兩個案件都要玩過、看到結局，才能登記兌換宣導小禮物喔！</p>
+      <p>先選一個案件開始：</p>
+      <div id="introProgress" class="intro-progress hidden">—</div>
       <div class="case-select">
         <button class="game-btn case-btn" data-case="case1">案件一：古蹟修復工程</button>
         <button class="game-btn case-btn" data-case="case2">案件二：特展設備採購</button>
       </div>
+      <button id="goToCertBtn" class="game-btn ghost-btn hidden">兩案都完成了，前往兌獎登記 →</button>
+      <button id="clearProgressBtn" class="text-link-btn hidden">清除目前的破關紀錄，重新開始</button>
     </div>
   </div>
 
@@ -96,14 +100,50 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
       <h1 id="endingTitle">結局</h1>
       <p id="endingText">—</p>
       <p id="endingScore" class="ending-score">—</p>
-      <button id="restartBtn" class="game-btn">重新遊玩</button>
+
+      <div id="continue-block" class="hidden">
+        <p id="continueText">—</p>
+        <button id="continueBtn" class="game-btn">—</button>
+      </div>
+
+      <div id="cert-section" class="hidden">
+        <p class="cert-intro">兩個案件都完成了！可以截圖下方完成證明，到政風室兌換宣導小禮物。</p>
+        <div class="cert-input-row">
+          <input type="text" id="certNameInput" placeholder="輸入姓名或暱稱（選填）" maxlength="20">
+          <button id="certGenerateBtn" class="game-btn">產生完成證明</button>
+        </div>
+        <div id="certCard" class="cert-card hidden">
+          <div class="cert-seal">驗訖</div>
+          <div class="cert-header">誠信抉擇・完成證明</div>
+          <div class="cert-name" id="certName">—</div>
+          <div class="cert-row"><span>完成日期</span><span id="certDate">—</span></div>
+          <div class="cert-row"><span>案件一結局</span><span id="certCase1">—</span></div>
+          <div class="cert-row"><span>案件二結局</span><span id="certCase2">—</span></div>
+          <div class="cert-code" id="certCode">—</div>
+          <div class="cert-footer">請截圖本畫面，至政風室兌換宣導小禮物</div>
+        </div>
+
+        <div id="certSubmitBlock" class="hidden">
+          <div class="cert-submit-title">登記完成紀錄（供兌獎統計）</div>
+          <div class="cert-input-row">
+            <input type="email" id="certEmailInput" placeholder="請輸入電子郵件" maxlength="80">
+            <button id="certSubmitBtn" class="game-btn">送出登記</button>
+          </div>
+          <div class="cert-privacy">
+            【蒐集個人資料告知事項】本表單由政風室蒐集您的姓名與電子郵件，僅供本次工程倫理宣導活動之兌獎核對與成效統計，保存至活動結束後六個月即銷毀。您可依個人資料保護法第3條規定，向本室行使查詢、更正或刪除等權利。不填寫仍可截圖完成證明兌獎。
+          </div>
+          <div id="certStatus" class="cert-status"></div>
+        </div>
+      </div>
+
+      <button id="restartBtn" class="game-btn ghost-btn">返回選案畫面</button>
     </div>
   </div>
 
 </div>
 
-<script src="js/data.js?v=34"></script>
-<script src="js/engine.js?v=34"></script>
-<script src="js/game.js?v=34"></script>
+<script src="js/data.js?v=35"></script>
+<script src="js/engine.js?v=35"></script>
+<script src="js/game.js?v=35"></script>
 </body>
 </html>
