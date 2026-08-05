@@ -164,7 +164,10 @@ function updateMovement() {
     state.player.y = pos.y;
   }
 
-  if (transitionCooldown <= 0 && isInExit(state.map, state.player.x, state.player.y) && !exitConfirmPending) {
+  const inExit = isInExit(state.map, state.player.x, state.player.y);
+  if (!inExit) {
+    exitConfirmDismissed = false;
+  } else if (transitionCooldown <= 0 && !exitConfirmPending && !exitConfirmDismissed) {
     const fieldMapId = CASES[state.caseId].fieldMap;
     const evidenceFlag = FIELD_EVIDENCE_FLAG[state.caseId];
     if (state.currentMapId === fieldMapId && !state.flags[evidenceFlag]) {
@@ -172,7 +175,7 @@ function updateMovement() {
       showConfirm(
         "你好像還沒有仔細調查現場、找大家聊聊，確定要先離開嗎？",
         () => { exitConfirmPending = false; switchMap(resolveExitTarget(state)); },
-        () => { exitConfirmPending = false; transitionCooldown = 30; }
+        () => { exitConfirmPending = false; exitConfirmDismissed = true; }
       );
       return;
     }
@@ -181,10 +184,12 @@ function updateMovement() {
 }
 
 // 離開案件現場前，如果還沒找到關鍵證據，先提醒一下，避免不小心走進離開熱點
-// 就被系統當成「沒調查、直接結案」處理。exitConfirmPending 避免玩家站在熱點
-// 上時，提示視窗因為每一影格都判斷一次而重複彈出。
+// 就被系統當成「沒調查、直接結案」處理。exitConfirmPending 避免提示視窗因為
+// 每一影格都判斷一次而重複彈出；exitConfirmDismissed 記住「玩家已經在熱點上
+// 選過『再看看』」，一直站著也不會一直跳，要走出熱點範圍再走回來才會重新提醒。
 const FIELD_EVIDENCE_FLAG = { case1: "foundEvidence", case2: "foundSpecEvidence" };
 let exitConfirmPending = false;
+let exitConfirmDismissed = false;
 
 function showConfirm(message, onConfirm, onCancel) {
   document.getElementById("confirmText").textContent = message;

@@ -346,13 +346,17 @@ const DIALOGUES = {
         text: "驗收都OK吧？那就照流程結案囉，辛苦了。",
         choices: [
           {
-            label: "好的",
+            label: "好的，沒問題",
             next: null,
             effects: (s) => {
               s.flags.caseClosedBlind = true;
               s.flags.giftResolved = true;
               triggerEnding(s);
             },
+          },
+          {
+            label: "等等，我想再去確認一次",
+            next: null,
           },
         ],
       },
@@ -421,12 +425,16 @@ const DIALOGUES = {
         text: "規格書都OK吧？那評選會議就照排定時間進行囉，辛苦了。",
         choices: [
           {
-            label: "好的",
+            label: "好的，沒問題",
             next: null,
             effects: (s) => {
               s.flags.caseClosedBlind2 = true;
               triggerEnding(s);
             },
+          },
+          {
+            label: "等等，我想再去確認一次",
+            next: null,
           },
         ],
       },
