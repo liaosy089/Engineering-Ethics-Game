@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
+<script>
+// 手機／平板（觸控為主要輸入）自動導去按鈕點擊的文字版；電腦滑鼠操作才留在這個走動版。
+if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+  location.replace('https://liaosy089.github.io/Engineering-Ethics-Story/');
+}
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>誠信抉擇：文化局工程倫理小遊戲</title>
