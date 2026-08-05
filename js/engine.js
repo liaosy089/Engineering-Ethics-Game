@@ -228,17 +228,39 @@ function renderSceneBackground(ctx, scene, pulse) {
   }
 
   const e = scene.exit;
-  ctx.fillStyle = "rgba(126, 200, 255, 0.16)";
+  const glow = 0.5 + 0.5 * pulse;
+  ctx.fillStyle = `rgba(126, 200, 255, ${0.2 + 0.14 * glow})`;
   ctx.fillRect(e.x, e.y, e.w, e.h);
-  ctx.strokeStyle = `rgba(126, 200, 255, ${0.5 + 0.4 * pulse})`;
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 5]);
+  ctx.strokeStyle = `rgba(126, 200, 255, ${0.65 + 0.35 * glow})`;
+  ctx.lineWidth = 3;
+  ctx.setLineDash([9, 6]);
   ctx.strokeRect(e.x + 2, e.y + 2, e.w - 4, e.h - 4);
   ctx.setLineDash([]);
-  ctx.font = "11px 'Noto Sans TC', sans-serif";
+
+  // 用跟 NPC 名牌一樣的「深底白字」小牌子做離開標示，不管背景圖亮暗都看得清楚，
+  // 加個門的 icon 讓它比純文字更醒目、一眼就認得出是出口。
+  const label = "🚪 離開";
+  ctx.font = "bold 15px 'Noto Sans TC', sans-serif";
+  const textW = ctx.measureText(label).width;
+  const padX = 10, boxH = 24;
+  const boxW = textW + padX * 2;
+  const cx = e.x + e.w / 2;
+  const cy = e.y - boxH / 2 - 8;
+  ctx.fillStyle = `rgba(20, 60, 90, ${0.78 + 0.2 * glow})`;
+  if (ctx.roundRect) {
+    ctx.beginPath();
+    ctx.roundRect(cx - boxW / 2, cy - boxH / 2, boxW, boxH, 6);
+    ctx.fill();
+    ctx.strokeStyle = `rgba(126, 200, 255, ${0.8 + 0.2 * glow})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  } else {
+    ctx.fillRect(cx - boxW / 2, cy - boxH / 2, boxW, boxH);
+  }
+  ctx.fillStyle = "#eaf6ff";
   ctx.textAlign = "center";
-  ctx.fillStyle = "#e8f4ff";
-  ctx.fillText("離開", e.x + e.w / 2, e.y - 6);
+  ctx.textBaseline = "middle";
+  ctx.fillText(label, cx, cy + 1);
 }
 
 function renderStandee(ctx, x, y, sprite, portrait, scale, flip, fallbackColor) {

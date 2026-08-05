@@ -356,6 +356,13 @@ canvas#gameCanvas {
 }
 .game-btn:hover { filter: brightness(1.08); }
 
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
 .case-select {
   display: flex;
   flex-direction: column;

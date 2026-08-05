@@ -55,9 +55,12 @@ const SCENES = {
     background: "assets/backgrounds/site.jpg",
     // 這張圖的石板路是從左下往右上斜切收窄的透視，右半邊多半是圍籬跟建築，
     // 梯形跟著實際路面走，不是左右對稱的通道。
-    floor: { yTop: 255, yBottom: 442, topLeftX: 10, topRightX: 185, bottomLeftX: 10, bottomRightX: 470 },
+    floor: { yTop: 255, yBottom: 442, topLeftX: 10, topRightX: 185, bottomLeftX: 10, bottomRightX: 600 },
     playerSpawn: { x: 150, y: 430 },
-    exit: { x: 415, y: 410, w: 70, h: 50, target: "office" },
+    // 離開熱點必須整個落在上面梯形可走動範圍內（不然框看起來很大，玩家卻走不進去）。
+    // 底下這組數字算過：在 y:418~442 這段，梯形右邊界最窄處還有到 x≈548，
+    // 框只到 540，留了一點安全邊界。
+    exit: { x: 460, y: 418, w: 80, h: 24, target: "office" },
     npcs: [
       { id: "supervisor", name: "監造技師", x: 110, y: 340 },
       { id: "historian", name: "文史工作者", x: 240, y: 370 },

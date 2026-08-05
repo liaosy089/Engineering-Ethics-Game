@@ -164,9 +164,39 @@ function updateMovement() {
     state.player.y = pos.y;
   }
 
-  if (transitionCooldown <= 0 && isInExit(state.map, state.player.x, state.player.y)) {
+  if (transitionCooldown <= 0 && isInExit(state.map, state.player.x, state.player.y) && !exitConfirmPending) {
+    const fieldMapId = CASES[state.caseId].fieldMap;
+    const evidenceFlag = FIELD_EVIDENCE_FLAG[state.caseId];
+    if (state.currentMapId === fieldMapId && !state.flags[evidenceFlag]) {
+      exitConfirmPending = true;
+      showConfirm(
+        "你好像還沒有仔細調查現場、找大家聊聊，確定要先離開嗎？",
+        () => { exitConfirmPending = false; switchMap(resolveExitTarget(state)); },
+        () => { exitConfirmPending = false; transitionCooldown = 30; }
+      );
+      return;
+    }
     switchMap(resolveExitTarget(state));
   }
+}
+
+// 離開案件現場前，如果還沒找到關鍵證據，先提醒一下，避免不小心走進離開熱點
+// 就被系統當成「沒調查、直接結案」處理。exitConfirmPending 避免玩家站在熱點
+// 上時，提示視窗因為每一影格都判斷一次而重複彈出。
+const FIELD_EVIDENCE_FLAG = { case1: "foundEvidence", case2: "foundSpecEvidence" };
+let exitConfirmPending = false;
+
+function showConfirm(message, onConfirm, onCancel) {
+  document.getElementById("confirmText").textContent = message;
+  document.getElementById("confirm-overlay").classList.remove("hidden");
+  document.getElementById("confirmOkBtn").onclick = () => {
+    document.getElementById("confirm-overlay").classList.add("hidden");
+    onConfirm();
+  };
+  document.getElementById("confirmCancelBtn").onclick = () => {
+    document.getElementById("confirm-overlay").classList.add("hidden");
+    if (onCancel) onCancel();
+  };
 }
 
 function tryInteract() {
@@ -575,8 +605,9 @@ function loop(time) {
   requestAnimationFrame(loop);
   const introOpen = !document.getElementById("intro-overlay").classList.contains("hidden");
   const endingOpen = !document.getElementById("ending-overlay").classList.contains("hidden");
+  const confirmOpen = !document.getElementById("confirm-overlay").classList.contains("hidden");
 
-  if (!introOpen && !endingOpen) {
+  if (!introOpen && !endingOpen && !confirmOpen) {
     if (!state.dialogue) {
       updateMovement();
       if (keysEdge["e"]) tryInteract();

@@ -10,7 +10,7 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>誠信抉擇：文化局工程倫理小遊戲</title>
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=36">
 </head>
 <body>
 <div id="game-root">
@@ -140,10 +140,21 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
     </div>
   </div>
 
+  <div id="confirm-overlay" class="overlay hidden">
+    <div class="overlay-box">
+      <h1>提醒</h1>
+      <p id="confirmText">—</p>
+      <div class="confirm-actions">
+        <button id="confirmCancelBtn" class="game-btn ghost-btn">再看看</button>
+        <button id="confirmOkBtn" class="game-btn">還是要離開</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<script src="js/data.js?v=35"></script>
-<script src="js/engine.js?v=35"></script>
-<script src="js/game.js?v=35"></script>
+<script src="js/data.js?v=36"></script>
+<script src="js/engine.js?v=36"></script>
+<script src="js/game.js?v=36"></script>
 </body>
 </html>
