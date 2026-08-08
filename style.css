@@ -492,7 +492,8 @@ canvas#gameCanvas {
 
 .cert-submit-title { font-size: 13px; font-weight: 700; color: #7ec8ff; margin-bottom: 8px; }
 .cert-privacy { font-size: 10.5px; line-height: 1.6; color: #9aa4b5; margin-bottom: 8px; }
-.cert-status { font-size: 12.5px; min-height: 16px; text-align: center; }
+.cert-generate-btn { width: 100%; margin-top: 2px; }
+.cert-status { font-size: 12.5px; min-height: 16px; text-align: center; margin-top: 4px; }
 .cert-status.ok { color: #52d17c; }
 .cert-status.err { color: #ff6b6b; }
 

@@ -352,15 +352,14 @@ function showEnding() {
 }
 
 // ---------------- 兌獎登記（完成證明 + Google 表單）----------------
-// 跟文字版共用同一套邏輯與同一份 Google 表單設定：
-// 先在本機產生一張「完成證明」卡片，同仁隨時可以截圖去政風室兌獎；
-// 願意留信箱的話，才會多送出一次登記。FORM_ACTION 留空的話，
-// 登記功能會自動隱藏，遊戲照常運作。
+// 跟文字版共用同一套邏輯與同一份 Google 表單設定：填姓名跟分機、按一個按鈕，
+// 同時產生「完成證明」卡片（可截圖去政風室兌獎）跟送出登記（供兌獎統計）。
+// FORM_ACTION 留空的話，登記會自動跳過，但證明卡片還是照樣產生。
 const SUBMIT_CONFIG = {
   FORM_ACTION: "https://docs.google.com/forms/d/e/1FAIpQLSfrEg4U89IHuuy8ZCq9OwqzOLKrQzHOpbNg75FAyZP_rOa0AA/formResponse",
   FIELDS: {
     name: "entry.20416040", // 姓名或暱稱
-    email: "entry.526894555", // 電子郵件
+    ext: "entry.526894555", // 辦公室分機（原本這題是電子郵件，改成分機後題目文字要記得換）
     date: "entry.1804918415", // 完成日期
     case1Ending: "entry.2123688083", // 案件一結局
     case1Integrity: "entry.2049931210", // 案件一誠信度
@@ -371,7 +370,7 @@ const SUBMIT_CONFIG = {
 };
 
 function submitConfigured() {
-  return !!(SUBMIT_CONFIG.FORM_ACTION && SUBMIT_CONFIG.FIELDS.email);
+  return !!(SUBMIT_CONFIG.FORM_ACTION && SUBMIT_CONFIG.FIELDS.ext);
 }
 
 function simpleCode(str) {
@@ -379,9 +378,6 @@ function simpleCode(str) {
   for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
   return Math.abs(h).toString(36).toUpperCase().slice(0, 6);
 }
-
-let lastCertData = null;
-let certSubmitted = false;
 
 function setCertStatus(msg, kind) {
   const el = document.getElementById("certStatus");
@@ -392,72 +388,54 @@ function setCertStatus(msg, kind) {
 function resetCertUI() {
   document.getElementById("certCard").classList.add("hidden");
   document.getElementById("certNameInput").value = "";
-  document.getElementById("certSubmitBlock").classList.add("hidden");
-  document.getElementById("certEmailInput").value = "";
-  document.getElementById("certEmailInput").disabled = false;
-  document.getElementById("certSubmitBtn").disabled = false;
+  document.getElementById("certExtInput").value = "";
+  document.getElementById("certGenerateBtn").disabled = false;
   setCertStatus("", "");
-  lastCertData = null;
-  certSubmitted = false;
 }
 
 function generateCert() {
-  const name = document.getElementById("certNameInput").value.trim() || "匿名同仁";
+  const name = document.getElementById("certNameInput").value.trim();
+  const ext = document.getElementById("certExtInput").value.trim();
+  if (!name || !ext) {
+    setCertStatus("請填寫姓名（或暱稱）與辦公室分機，才能產生完成證明。", "err");
+    return;
+  }
+
   const now = new Date();
   const dateStr = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")}`;
   const c1 = progress.case1;
   const c2 = progress.case2;
   const case1Ending = c1 ? `${ENDINGS[c1.endingKey].title}（${c1.integrity}分）` : "—";
   const case2Ending = c2 ? `${ENDINGS2[c2.endingKey].title}（${c2.integrity}分）` : "—";
-  const code = "CS-" + simpleCode(name + dateStr + (c1 ? c1.endingKey : "") + (c2 ? c2.endingKey : ""));
+  const code = "CS-" + simpleCode(name + ext + dateStr + (c1 ? c1.endingKey : "") + (c2 ? c2.endingKey : ""));
 
   document.getElementById("certName").textContent = name;
+  document.getElementById("certExt").textContent = ext;
   document.getElementById("certDate").textContent = dateStr;
   document.getElementById("certCase1").textContent = case1Ending;
   document.getElementById("certCase2").textContent = case2Ending;
   document.getElementById("certCode").textContent = "任務代號：" + code;
   document.getElementById("certCard").classList.remove("hidden");
-
-  lastCertData = {
-    name,
-    date: dateStr,
-    case1Ending,
-    case1Integrity: c1 ? String(c1.integrity) : "",
-    case2Ending,
-    case2Integrity: c2 ? String(c2.integrity) : "",
-    code,
-  };
-
-  if (submitConfigured() && !certSubmitted) {
-    document.getElementById("certSubmitBlock").classList.remove("hidden");
-  }
   document.getElementById("certCard").scrollIntoView({ behavior: "smooth", block: "center" });
-}
 
-function submitCert() {
-  if (certSubmitted) return;
-  if (!lastCertData) {
-    setCertStatus("請先產生完成證明。", "err");
+  if (!submitConfigured()) {
+    setCertStatus("請截圖上方完成證明，至政風室兌獎。", "ok");
     return;
   }
-  const email = document.getElementById("certEmailInput").value.trim();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    setCertStatus("請輸入正確的電子郵件格式。", "err");
-    return;
-  }
-  document.getElementById("certSubmitBtn").disabled = true;
+
+  document.getElementById("certGenerateBtn").disabled = true;
   setCertStatus("登記中…", "");
 
   const f = SUBMIT_CONFIG.FIELDS;
   const body = new URLSearchParams();
-  if (f.name) body.append(f.name, lastCertData.name);
-  if (f.email) body.append(f.email, email);
-  if (f.date) body.append(f.date, lastCertData.date);
-  if (f.case1Ending) body.append(f.case1Ending, lastCertData.case1Ending);
-  if (f.case1Integrity) body.append(f.case1Integrity, lastCertData.case1Integrity);
-  if (f.case2Ending) body.append(f.case2Ending, lastCertData.case2Ending);
-  if (f.case2Integrity) body.append(f.case2Integrity, lastCertData.case2Integrity);
-  if (f.code) body.append(f.code, lastCertData.code);
+  if (f.name) body.append(f.name, name);
+  if (f.ext) body.append(f.ext, ext);
+  if (f.date) body.append(f.date, dateStr);
+  if (f.case1Ending) body.append(f.case1Ending, case1Ending);
+  if (f.case1Integrity) body.append(f.case1Integrity, c1 ? String(c1.integrity) : "");
+  if (f.case2Ending) body.append(f.case2Ending, case2Ending);
+  if (f.case2Integrity) body.append(f.case2Integrity, c2 ? String(c2.integrity) : "");
+  if (f.code) body.append(f.code, code);
 
   fetch(SUBMIT_CONFIG.FORM_ACTION, {
     method: "POST",
@@ -466,13 +444,11 @@ function submitCert() {
     body: body.toString(),
   })
     .then(() => {
-      certSubmitted = true;
       setCertStatus("✅ 登記完成，感謝參與！請截圖上方完成證明至政風室兌獎。", "ok");
-      document.getElementById("certEmailInput").disabled = true;
     })
     .catch((err) => {
       console.error("submit failed", err);
-      document.getElementById("certSubmitBtn").disabled = false;
+      document.getElementById("certGenerateBtn").disabled = false;
       setCertStatus("⚠️ 登記失敗，請確認網路後再試一次，或直接截圖完成證明兌獎。", "err");
     });
 }
@@ -645,7 +621,6 @@ document.querySelectorAll(".case-btn").forEach((btn) => {
 });
 document.getElementById("goToCertBtn").addEventListener("click", showCertOnly);
 document.getElementById("certGenerateBtn").addEventListener("click", generateCert);
-document.getElementById("certSubmitBtn").addEventListener("click", submitCert);
 
 // 「返回選案畫面」不會清掉已經破關的紀錄——只是帶你回去選案件，
 // 避免破完一案想接著玩另一案時，不小心把已經完成的那案也洗掉。

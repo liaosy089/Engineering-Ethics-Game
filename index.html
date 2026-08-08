@@ -10,7 +10,7 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>誠信抉擇：文化局工程倫理小遊戲</title>
-<link rel="stylesheet" href="style.css?v=39">
+<link rel="stylesheet" href="style.css?v=40">
 </head>
 <body>
 <div id="game-root">
@@ -107,32 +107,26 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
       </div>
 
       <div id="cert-section" class="hidden">
-        <p class="cert-intro">兩個案件都完成了！可以截圖下方完成證明，到政風室兌換宣導小禮物。</p>
+        <p class="cert-intro">兩個案件都完成了！請填寫姓名與分機，產生完成證明後截圖，到政風室兌換宣導小禮物。</p>
         <div class="cert-input-row">
-          <input type="text" id="certNameInput" placeholder="輸入姓名或暱稱（選填）" maxlength="20">
-          <button id="certGenerateBtn" class="game-btn">產生完成證明</button>
+          <input type="text" id="certNameInput" placeholder="姓名或暱稱" maxlength="20">
+          <input type="text" id="certExtInput" placeholder="辦公室分機" maxlength="10">
         </div>
+        <div class="cert-privacy">
+          【蒐集個人資料告知事項】本表單由政風室蒐集您的姓名與辦公室分機，僅供本次工程倫理宣導活動之兌獎核對與成效統計，保存至活動結束後六個月即銷毀。您可依個人資料保護法第3條規定，向本室行使查詢、更正或刪除等權利。
+        </div>
+        <button id="certGenerateBtn" class="game-btn cert-generate-btn">產生完成證明</button>
+        <div id="certStatus" class="cert-status"></div>
         <div id="certCard" class="cert-card hidden">
           <div class="cert-seal">驗訖</div>
           <div class="cert-header">誠信抉擇・完成證明</div>
           <div class="cert-name" id="certName">—</div>
+          <div class="cert-row"><span>辦公室分機</span><span id="certExt">—</span></div>
           <div class="cert-row"><span>完成日期</span><span id="certDate">—</span></div>
           <div class="cert-row"><span>案件一結局</span><span id="certCase1">—</span></div>
           <div class="cert-row"><span>案件二結局</span><span id="certCase2">—</span></div>
           <div class="cert-code" id="certCode">—</div>
           <div class="cert-footer">請截圖本畫面，至政風室兌換宣導小禮物</div>
-        </div>
-
-        <div id="certSubmitBlock" class="hidden">
-          <div class="cert-submit-title">登記完成紀錄（供兌獎統計）</div>
-          <div class="cert-input-row">
-            <input type="email" id="certEmailInput" placeholder="請輸入電子郵件" maxlength="80">
-            <button id="certSubmitBtn" class="game-btn">送出登記</button>
-          </div>
-          <div class="cert-privacy">
-            【蒐集個人資料告知事項】本表單由政風室蒐集您的姓名與電子郵件，僅供本次工程倫理宣導活動之兌獎核對與成效統計，保存至活動結束後六個月即銷毀。您可依個人資料保護法第3條規定，向本室行使查詢、更正或刪除等權利。不填寫仍可截圖完成證明兌獎。
-          </div>
-          <div id="certStatus" class="cert-status"></div>
         </div>
       </div>
 
@@ -153,8 +147,8 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
 
 </div>
 
-<script src="js/data.js?v=39"></script>
-<script src="js/engine.js?v=39"></script>
-<script src="js/game.js?v=39"></script>
+<script src="js/data.js?v=40"></script>
+<script src="js/engine.js?v=40"></script>
+<script src="js/game.js?v=40"></script>
 </body>
 </html>
