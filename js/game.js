@@ -117,6 +117,11 @@ function switchMap(mapId) {
 const MOVE_KEYS = ["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright", " ", "e"];
 
 window.addEventListener("keydown", (e) => {
+  // 結局畫面填「完成證明」的姓名/信箱等輸入框時，不要攔截 WASD/E/空白鍵，
+  // 不然這幾個字母根本打不進輸入框（原本的問題）。
+  const activeTag = document.activeElement && document.activeElement.tagName;
+  if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
+
   const k = e.key.toLowerCase();
   if (MOVE_KEYS.includes(k)) e.preventDefault();
   if (!keys[k]) keysEdge[k] = true;
