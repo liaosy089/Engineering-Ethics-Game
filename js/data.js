@@ -158,7 +158,7 @@ const DIALOGUES = {
     nodes: {
       intro: {
         speaker: "小風",
-        text: "嗨，你好呀！我是政風室的小風😊\n你就是新來負責古蹟修復案驗收的同仁吧？",
+        text: "嗨，你好呀！我是政風室的小風😊\n你就是新來協助辦理古蹟修復案驗收作業的同仁吧？",
         onEnter: (s) => { s.flags.metXiaofeng = true; },
         next: "intro2",
       },
@@ -538,7 +538,7 @@ const DIALOGUES = {
     nodes: {
       greet: {
         speaker: "承包商",
-        text: "喔！新來負責的長官，辛苦你了～工程都照圖施工啦，你放心！",
+        text: "喔！新來協助驗收的長官，辛苦你了～工程都照圖施工啦，你放心！",
         choices: [
           { label: "圖說上指定的檜木，工地現場有用嗎？", next: "deny" },
           { label: "先看看再說", next: null },
