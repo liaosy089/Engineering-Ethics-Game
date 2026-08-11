@@ -615,6 +615,7 @@ const DIALOGUES = {
       },
       gift_reminder: {
         speaker: "（提醒）",
+        portraitOverride: "xiaofeng",
         text: "遇到與職務有利害關係廠商的餽贈，除了先判斷能不能收之外，本局政風室也建議主動說明並留下紀錄。\n即使當場已拒收，有紀錄仍能在日後發生爭議時，多一層保障。",
         choices: [{ label: "好，我知道了", next: null }],
       },
@@ -779,6 +780,7 @@ const DIALOGUES = {
       },
       invite_reminder: {
         speaker: "（提醒）",
+        portraitOverride: "xiaofeng",
         text: "跟職務有利害關係廠商的私人飲宴原則上不要參加。對於可能引發廉政疑慮的邀約，本局政風室也建議主動說明並留下紀錄，讓自己多一層保障。",
         choices: [{ label: "好，我知道了", next: null }],
       },
