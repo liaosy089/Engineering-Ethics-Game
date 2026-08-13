@@ -45,7 +45,7 @@ const SCENES = {
     exit: { x: 480, y: 395, w: 80, h: 60, target: "case_field" },
     npcs: [
       { id: "xiaofeng", name: "小風", x: 240, y: 260 },
-      { id: "chief", name: "資深同仁", x: 560, y: 260 },
+      { id: "chief", name: "祥哥", x: 560, y: 260 },
       { id: "colleague", name: "阿德", x: 420, y: 340 },
     ],
     objects: [],
@@ -101,17 +101,17 @@ const ITEM_NAMES = {
 
 // ---- 任務流程 ----
 const QUEST_STEPS_CASE1 = [
-  { id: "start", title: "向資深同仁報到", desc: "去找資深同仁，了解這次古蹟修復工程驗收案的狀況。" },
+  { id: "start", title: "向祥哥報到", desc: "去找祥哥，了解這次古蹟修復工程驗收案的狀況。" },
   { id: "go_site", title: "前往工地", desc: "前往古蹟修復工地，了解目前驗收與施工狀況。" },
   { id: "investigate", title: "了解狀況", desc: "跟工地的人聊聊，留意任何不對勁的細節。" },
-  { id: "report", title: "回報結果", desc: "回文化局，向資深同仁回報你在工地的發現。" },
+  { id: "report", title: "回報結果", desc: "回機關，向祥哥回報你在工地的發現。" },
 ];
 
 const QUEST_STEPS_CASE2 = [
-  { id: "c2_start", title: "向資深同仁報到", desc: "去找資深同仁，了解這次特展設備採購案的狀況。" },
+  { id: "c2_start", title: "向祥哥報到", desc: "去找祥哥，了解這次特展設備採購案的狀況。" },
   { id: "c2_review_spec", title: "了解規格書", desc: "去找負責撰寫規格書的同事，了解目前規格內容。" },
   { id: "c2_investigate", title: "了解狀況", desc: "到特展現場，跟廠商、評選委員、其他廠商聊聊，留意任何不對勁的地方。" },
-  { id: "c2_report", title: "回報結果", desc: "回文化局，向資深同仁回報你的發現與處理建議。" },
+  { id: "c2_report", title: "回報結果", desc: "回機關，向祥哥回報你的發現與處理建議。" },
 ];
 
 // ---- 案件設定 ----
@@ -265,7 +265,7 @@ const DIALOGUES = {
     },
   },
 
-  // ============ 資深同仁 ============
+  // ============ 祥哥（資深同仁）============
   chief: {
     start(state) {
       if (state.caseId === "case2") {
@@ -285,13 +285,13 @@ const DIALOGUES = {
     },
     nodes: {
       briefing: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "喔，你來啦。OO街屋古蹟修復工程差不多要驗收結案了，監造那邊說都沒問題。",
         next: "briefing2",
       },
       briefing2: {
-        speaker: "資深同仁",
-        text: "這案子拖超過一年，上面一直在問進度。這次驗收作業你協助辦理，程序能跑就盡快跑一跑，趕快把案子結掉，大家都輕鬆～",
+        speaker: "祥哥",
+        text: "這案子拖超過一年，終於竣工了。這次驗收作業你協助辦理，程序能跑就盡快跑一跑，趕快把案子結掉，大家都輕鬆～",
         choices: [
           {
             label: "我了解，我先去工地看看狀況",
@@ -301,22 +301,22 @@ const DIALOGUES = {
         ],
       },
       wait: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "去工地看看吧，監造技師都在現場，有狀況再回來跟我說。",
         choices: [{ label: "好的", next: null }],
       },
       final_decision: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "怎麼樣，工地那邊都還好吧？",
         next: "final_decision2",
       },
       final_decision2: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "喔？你說材料看起來不太一樣……會不會只是外觀處理方式不同，不一定是真的換了材料？工期已經拖很久了，要是能先讓驗收過關，之後真的有需要再處理，也比較不影響進度。",
         next: "final_decision3",
       },
       final_decision3: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "老實說，這案子拖很久了，大家壓力都很大，我也希望能盡快告一段落。如果沒有十足把握，要不要先照原本方式結案，好嗎？",
         choices: [
           {
@@ -342,7 +342,7 @@ const DIALOGUES = {
         ],
       },
       final_no_evidence: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "驗收都OK吧？那就照流程結案囉，辛苦了。",
         choices: [
           {
@@ -361,17 +361,17 @@ const DIALOGUES = {
         ],
       },
       after: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "這件案子辛苦你了。",
         choices: [{ label: "（離開）", next: null }],
       },
       c2_briefing: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "欸，你上次那件案子辦得不錯，這次再麻煩你一下。這次是OO特展的設備採購案，快要開評選會議了。",
         next: "c2_briefing2",
       },
       c2_briefing2: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "規格書同事那邊都寫好了，你幫忙跑一下流程。評選委員我也找好了，是OOO老師，很資深，你們配合一下應該沒問題。",
         choices: [
           {
@@ -382,22 +382,22 @@ const DIALOGUES = {
         ],
       },
       c2_wait: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "記得先去了解一下規格書跟特展現場的狀況。",
         choices: [{ label: "好的", next: null }],
       },
       c2_final_decision: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "規格書都確認過了吧？評選會議準備好了嗎？",
         next: "c2_final_decision2",
       },
       c2_final_decision2: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "什麼？你說規格好像跟甲廠商的產品型錄很像？……這樣講會不會有點武斷，這種規格書寫法其實還滿常見的，不一定是故意的。",
         next: "c2_final_decision3",
       },
       c2_final_decision3: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "評選會議都排定了，這時候喊卡會打亂很多安排，搞不好是我們想太多了。你確定現在要提出來嗎？",
         choices: [
           {
@@ -421,7 +421,7 @@ const DIALOGUES = {
         ],
       },
       c2_final_no_evidence: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "規格書都OK吧？那評選會議就照排定時間進行囉，辛苦了。",
         choices: [
           {
@@ -439,7 +439,7 @@ const DIALOGUES = {
         ],
       },
       c2_after: {
-        speaker: "資深同仁",
+        speaker: "祥哥",
         text: "這次也辛苦你了。",
         choices: [{ label: "（離開）", next: null }],
       },
