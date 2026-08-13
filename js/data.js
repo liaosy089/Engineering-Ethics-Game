@@ -38,7 +38,7 @@ const SPRITES = {
 // exit.target 為 "case_field" 時，由 getExitTarget() 依目前案件解析成 CASES[caseId].fieldMap。
 const SCENES = {
   office: {
-    label: "文化局辦公室",
+    label: "機關辦公室",
     background: "assets/backgrounds/office.jpg",
     floor: { yTop: 210, yBottom: 445, topLeftX: 200, topRightX: 600, bottomLeftX: 20, bottomRightX: 700 },
     playerSpawn: { x: 260, y: 410 },
@@ -635,7 +635,7 @@ const DIALOGUES = {
     nodes: {
       greet: {
         speaker: "文史工作者",
-        text: "唉，你也是文化局的人吧？我常常來看這棟老房子，最近觀察到怪怪的地方。",
+        text: "唉，你也是機關的人吧？我常常來看這棟老房子，最近觀察到怪怪的地方。",
         choices: [
           { label: "怎麼說？", next: "clue" },
           { label: "謝謝提醒，我了解", next: null },
@@ -800,7 +800,7 @@ const DIALOGUES = {
     nodes: {
       greet: {
         speaker: "評選委員",
-        text: "你好，我是這次特展案的評選委員之一，之前也常跟文化局合作。",
+        text: "你好，我是這次特展案的評選委員之一，之前也常跟機關合作。",
         choices: [
           { label: "請問老師跟甲廠商熟嗎？", next: "slip" },
           {
