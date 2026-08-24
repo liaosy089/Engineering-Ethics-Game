@@ -56,6 +56,7 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
     <div id="panel-controls" class="panel">
       <div class="ctrl-row"><span class="key">W A S D</span> 移動</div>
       <div class="ctrl-row"><span class="key">E</span> 互動 / 對話</div>
+      <div class="ctrl-row"><span class="key">滑鼠點擊</span> 角色 / 物品 / 離開</div>
     </div>
 
     <div id="panel-inventory" class="panel">
@@ -114,9 +115,9 @@ if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
           <input type="text" id="certExtInput" placeholder="辦公室分機" maxlength="30">
         </div>
         <div class="cert-privacy">
-          【蒐集個人資料告知事項】本機關政風室為辦理本次工程倫理宣導活動之參與紀錄、兌獎核對及成效統計，蒐集您的姓名、辦公室分機，以及本活動之完成日期、兩案遊戲結局、誠信度及任務代號等資料。可識別個人之資料利用期間最長至活動結束後6個月；利用地區為中華民國境內，以及因使用Google表單服務所涉及之境外資料處理地區；利用對象為本機關辦理本活動之相關人員，並以電子方式處理及利用。本活動使用Google表單蒐集資料，資料處理可能涉及Google所提供之雲端服務。您得依個人資料保護法第3條規定，就您的個人資料行使查詢或請求閱覽、請求製給複製本、請求補充或更正、請求停止蒐集、處理或利用，以及請求刪除等權利；如欲行使上開權利，請洽本機關政風室。若您選擇不提供姓名或辦公室分機，將無法辦理本活動之兌獎核對。
+          【蒐集個人資料告知事項】本機關政風室為辦理本次工程倫理宣導活動之參與紀錄、兌獎核對及成效統計，蒐集您的姓名或暱稱、辦公室分機，以及本活動之完成日期、兩案遊戲結局、誠信度及任務代號等資料。可識別個人之資料利用期間最長至活動結束後6個月；利用地區為中華民國境內，以及因使用Google表單服務所涉及之境外資料處理地區；利用對象為本機關辦理本活動之相關人員，並以電子方式處理及利用。本活動使用Google表單蒐集資料，資料處理可能涉及Google所提供之雲端服務。您得依個人資料保護法第3條規定，就您的個人資料行使查詢或請求閱覽、請求製給複製本、請求補充或更正、請求停止蒐集、處理或利用，以及請求刪除等權利；如欲行使上開權利，請洽本機關政風室。若您選擇不提供姓名或暱稱、辦公室分機，將無法辦理本活動之兌獎核對。
         </div>
-        <button id="certGenerateBtn" class="game-btn cert-generate-btn">產生完成證明</button>
+        <button id="certGenerateBtn" class="game-btn cert-generate-btn">產生完成證明並送出兌獎登記</button>
         <div id="certStatus" class="cert-status"></div>
         <div id="certCard" class="cert-card hidden">
           <div class="cert-seal">驗訖</div>
