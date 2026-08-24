@@ -39,7 +39,7 @@ const SPRITES = {
 const SCENES = {
   office: {
     label: "機關辦公室",
-    background: "assets/backgrounds/office.jpg",
+    background: "assets/backgrounds/office.jpg?v=2",
     floor: { yTop: 210, yBottom: 445, topLeftX: 200, topRightX: 600, bottomLeftX: 20, bottomRightX: 700 },
     playerSpawn: { x: 260, y: 410 },
     exit: { x: 480, y: 395, w: 80, h: 60, target: "case_field" },
