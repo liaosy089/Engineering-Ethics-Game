@@ -558,7 +558,7 @@ const DIALOGUES = {
         choices: [
           {
             label: "謝謝，我收下了",
-            next: "gift_reminder",
+            next: "gift_reminder_accepted",
             effects: (s) => {
               addIntegrity(s, -15);
               addItem(s, "gift_box");
@@ -568,7 +568,7 @@ const DIALOGUES = {
           },
           {
             label: "不好意思，我不能收，這樣不合規定",
-            next: "gift_reminder",
+            next: "gift_reminder_declined",
             effects: (s) => {
               addIntegrity(s, 10);
               s.flags.declinedGift = true;
@@ -594,7 +594,7 @@ const DIALOGUES = {
         choices: [
           {
             label: "謝謝，但依規定我不能收下",
-            next: "gift_reminder",
+            next: "gift_reminder_declined",
             effects: (s) => {
               addIntegrity(s, 15);
               s.flags.declinedGift = true;
@@ -603,7 +603,7 @@ const DIALOGUES = {
           },
           {
             label: "……好吧，我還是收下好了",
-            next: "gift_reminder",
+            next: "gift_reminder_accepted",
             effects: (s) => {
               addIntegrity(s, -25);
               addItem(s, "gift_box");
@@ -613,7 +613,13 @@ const DIALOGUES = {
           },
         ],
       },
-      gift_reminder: {
+      gift_reminder_accepted: {
+        speaker: "（提醒）",
+        portraitOverride: "xiaofeng",
+        text: "這種與職務有利害關係廠商的餽贈，原則上不應收受。\n建議儘快主動向本機關政風室說明，會協助你依規定辦理退還、簽報、知會或其他適當處理，越早處理越能避免問題擴大。",
+        choices: [{ label: "好，我知道了", next: null }],
+      },
+      gift_reminder_declined: {
         speaker: "（提醒）",
         portraitOverride: "xiaofeng",
         text: "遇到與職務有利害關係廠商的餽贈，除了先判斷能不能收之外，本機關政風室也建議主動說明並留下紀錄。\n即使當場已拒收，有紀錄仍能在日後發生爭議時，多一層保障。",
@@ -725,7 +731,7 @@ const DIALOGUES = {
         choices: [
           {
             label: "好啊，先約起來",
-            next: "invite_reminder",
+            next: "invite_reminder_accepted",
             effects: (s) => {
               addIntegrity(s, -15);
               s.flags.acceptedInvite = true;
@@ -734,7 +740,7 @@ const DIALOGUES = {
           },
           {
             label: "謝謝，但這樣不太合適，我先不參加了",
-            next: "invite_reminder",
+            next: "invite_reminder_declined",
             effects: (s) => {
               addIntegrity(s, 10);
               s.flags.declinedInvite = true;
@@ -760,7 +766,7 @@ const DIALOGUES = {
         choices: [
           {
             label: "謝謝，但這樣不太合適，我先不參加了",
-            next: "invite_reminder",
+            next: "invite_reminder_declined",
             effects: (s) => {
               addIntegrity(s, 15);
               s.flags.declinedInvite = true;
@@ -769,7 +775,7 @@ const DIALOGUES = {
           },
           {
             label: "……好啊，先約起來",
-            next: "invite_reminder",
+            next: "invite_reminder_accepted",
             effects: (s) => {
               addIntegrity(s, -25);
               s.flags.acceptedInvite = true;
@@ -778,7 +784,13 @@ const DIALOGUES = {
           },
         ],
       },
-      invite_reminder: {
+      invite_reminder_accepted: {
+        speaker: "（提醒）",
+        portraitOverride: "xiaofeng",
+        text: "跟職務有利害關係廠商的私人飲宴原則上不應參加。既然已經赴約，建議儘快主動向本機關政風室說明邀約時間、場合、參與人員等情形，由政風室協助依實際情形處理——登錄本身不代表原本赴約的疑慮就此消失，但主動說明能避免問題擴大。",
+        choices: [{ label: "好，我知道了", next: null }],
+      },
+      invite_reminder_declined: {
         speaker: "（提醒）",
         portraitOverride: "xiaofeng",
         text: "跟職務有利害關係廠商的私人飲宴原則上不要參加。對於可能引發廉政疑慮的邀約，本機關政風室也建議主動說明並留下紀錄，讓自己多一層保障。",
