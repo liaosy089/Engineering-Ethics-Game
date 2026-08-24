@@ -136,6 +136,22 @@ window.addEventListener("keyup", (e) => {
   keys[e.key.toLowerCase()] = false;
 });
 
+// 滑鼠直接點角色/物件：不用先走過去、也不用按 E，點到就直接開對話——
+// 給不熟悉 WASD 操作的同仁一個不會卡關的替代方式。
+gameCanvasEl.addEventListener("click", (e) => {
+  if (!state || state.dialogue) return;
+  const introOpen = !document.getElementById("intro-overlay").classList.contains("hidden");
+  const endingOpen = !document.getElementById("ending-overlay").classList.contains("hidden");
+  const confirmOpen = !document.getElementById("confirm-overlay").classList.contains("hidden");
+  if (introOpen || endingOpen || confirmOpen) return;
+
+  const rect = gameCanvasEl.getBoundingClientRect();
+  const px = (e.clientX - rect.left) * (CANVAS_W / rect.width);
+  const py = (e.clientY - rect.top) * (CANVAS_H / rect.height);
+  const ent = findEntityAtPoint(state.map, px, py);
+  if (ent) openDialogue(ent);
+});
+
 function updateMovement() {
   let dx = 0, dy = 0, mag = 1;
 

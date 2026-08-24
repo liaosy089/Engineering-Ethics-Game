@@ -182,6 +182,26 @@ function findNearestEntity(scene, px, py, range) {
   return best;
 }
 
+// 滑鼠/觸控直接點角色或物件：不管玩家站多遠，點到就直接互動，
+// 判定範圍用跟繪製時同一套 depthScale/standeeTopOffset，站牌畫多大、判定範圍就多大。
+function findEntityAtPoint(scene, px, py) {
+  let best = null, bestDist = Infinity;
+  const all = [
+    ...scene.npcs.map((n) => ({ ...n, kind: "npc" })),
+    ...scene.objects.map((o) => ({ ...o, kind: "object" })),
+  ];
+  for (const ent of all) {
+    const scale = depthScale(scene, ent.y);
+    const halfW = (ent.kind === "object" ? 30 : 48) * scale;
+    const topY = ent.y - standeeTopOffset(ent, scale) - 10;
+    const bottomY = ent.y + 12 * scale;
+    if (px < ent.x - halfW || px > ent.x + halfW || py < topY || py > bottomY) continue;
+    const d = Math.hypot(ent.x - px, ent.y - py);
+    if (d < bestDist) { best = ent; bestDist = d; }
+  }
+  return best;
+}
+
 function isInExit(scene, x, y) {
   const e = scene.exit;
   return x >= e.x && x <= e.x + e.w && y >= e.y && y <= e.y + e.h;
@@ -375,10 +395,36 @@ function renderNameLabel(ctx, x, topY, name) {
 function renderInteractPrompt(ctx, scene, ent, time) {
   if (!ent) return;
   const scale = depthScale(scene, ent.y);
-  const bob = Math.sin(time / 200) * 2;
+  const bob = Math.sin(time / 200) * 3;
   const hasSprite = ent.sprite && ent.sprite.loaded && !ent.sprite.failed;
   const offset = hasSprite ? 130 * scale + 16 : 62 * scale;
-  ctx.font = "18px sans-serif";
+  const arrowY = ent.y - offset + bob;
+
+  // 跳動的箭頭，比單一個小圖示更容易第一眼注意到「這裡可以互動」。
+  ctx.font = "20px sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("💬", ent.x, ent.y - offset + bob);
+  ctx.textBaseline = "middle";
+  ctx.fillText("🔽", ent.x, arrowY);
+
+  // 文字提示：「按 E　與OO對話」／「按 E　查看OO」，跟著箭頭一起浮動。
+  const verb = ent.kind === "object" ? "查看" : "對話";
+  const label = `按 E　${verb === "對話" ? "與" : ""}${ent.name}${verb}`;
+  ctx.font = "bold 13px 'Noto Sans TC', sans-serif";
+  const textW = ctx.measureText(label).width;
+  const padX = 10, boxH = 22;
+  const boxW = textW + padX * 2;
+  const cy = arrowY - 18;
+  ctx.fillStyle = "rgba(20, 20, 24, 0.8)";
+  if (ctx.roundRect) {
+    ctx.beginPath();
+    ctx.roundRect(ent.x - boxW / 2, cy - boxH / 2, boxW, boxH, 6);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255, 214, 110, 0.9)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  } else {
+    ctx.fillRect(ent.x - boxW / 2, cy - boxH / 2, boxW, boxH);
+  }
+  ctx.fillStyle = "#ffd66e";
+  ctx.fillText(label, ent.x, cy + 1);
 }
