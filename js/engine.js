@@ -207,6 +207,17 @@ function isInExit(scene, x, y) {
   return x >= e.x && x <= e.x + e.w && y >= e.y && y <= e.y + e.h;
 }
 
+// 滑鼠/觸控直接點「離開」牌子或出口熱區本身：牌子畫在熱區正上方（見
+// renderSceneBackground 的 label 版位計算），這裡把兩塊合成一個判定範圍，
+// 不用真的走進熱區也能點擊離開。
+function isPointNearExit(scene, px, py) {
+  const e = scene.exit;
+  const labelBottom = e.y - 8;
+  const labelTop = labelBottom - 24 - 10;
+  if (px >= e.x - 10 && px <= e.x + e.w + 10 && py >= labelTop && py <= e.y + e.h) return true;
+  return false;
+}
+
 // ---------------- Rendering ----------------
 
 const FALLBACK_BG = "#2a3040";

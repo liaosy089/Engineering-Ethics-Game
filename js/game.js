@@ -139,7 +139,8 @@ window.addEventListener("keyup", (e) => {
   keys[e.code] = false;
 });
 
-// 滑鼠直接點角色/物件：不用先走過去、也不用按 E，點到就直接開對話——
+// 滑鼠直接點角色/物件：不用先走過去、也不用按 E，點到就直接開對話；
+// 點「離開」牌子或出口熱區也一樣，不用先走進去——
 // 給不熟悉 WASD 操作的同仁一個不會卡關的替代方式。
 gameCanvasEl.addEventListener("click", (e) => {
   if (!state || state.dialogue) return;
@@ -151,8 +152,11 @@ gameCanvasEl.addEventListener("click", (e) => {
   const rect = gameCanvasEl.getBoundingClientRect();
   const px = (e.clientX - rect.left) * (CANVAS_W / rect.width);
   const py = (e.clientY - rect.top) * (CANVAS_H / rect.height);
+
   const ent = findEntityAtPoint(state.map, px, py);
-  if (ent) openDialogue(ent);
+  if (ent) { openDialogue(ent); return; }
+
+  if (isPointNearExit(state.map, px, py)) tryExit();
 });
 
 function updateMovement() {
@@ -191,20 +195,27 @@ function updateMovement() {
   const inExit = isInExit(state.map, state.player.x, state.player.y);
   if (!inExit) {
     exitConfirmDismissed = false;
-  } else if (transitionCooldown <= 0 && !exitConfirmPending && !exitConfirmDismissed) {
-    const fieldMapId = CASES[state.caseId].fieldMap;
-    const evidenceFlag = FIELD_EVIDENCE_FLAG[state.caseId];
-    if (state.currentMapId === fieldMapId && !state.flags[evidenceFlag]) {
-      exitConfirmPending = true;
-      showConfirm(
-        "你好像還沒有仔細調查現場、找大家聊聊，確定要先離開嗎？",
-        () => { exitConfirmPending = false; switchMap(resolveExitTarget(state)); },
-        () => { exitConfirmPending = false; exitConfirmDismissed = true; }
-      );
-      return;
-    }
-    switchMap(resolveExitTarget(state));
+  } else if (!exitConfirmDismissed) {
+    tryExit();
   }
+}
+
+// 觸發「離開」：案發現場還沒找到關鍵證據時先提醒一次，否則直接切換場景。
+// updateMovement()（走進熱區）跟點擊「離開」牌子/熱區，共用這同一套判斷。
+function tryExit() {
+  if (transitionCooldown > 0 || exitConfirmPending) return;
+  const fieldMapId = CASES[state.caseId].fieldMap;
+  const evidenceFlag = FIELD_EVIDENCE_FLAG[state.caseId];
+  if (state.currentMapId === fieldMapId && !state.flags[evidenceFlag]) {
+    exitConfirmPending = true;
+    showConfirm(
+      "你好像還沒有仔細調查現場、找大家聊聊，確定要先離開嗎？",
+      () => { exitConfirmPending = false; switchMap(resolveExitTarget(state)); },
+      () => { exitConfirmPending = false; exitConfirmDismissed = true; }
+    );
+    return;
+  }
+  switchMap(resolveExitTarget(state));
 }
 
 // 離開案件現場前，如果還沒找到關鍵證據，先提醒一下，避免不小心走進離開熱點
