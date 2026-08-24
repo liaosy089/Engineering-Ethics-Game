@@ -114,7 +114,10 @@ function switchMap(mapId) {
 
 // ---------------- 輸入 ----------------
 
-const MOVE_KEYS = ["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright", " ", "e"];
+// 用 e.code（實體按鍵位置）取代 e.key（IME 轉換後的字元），這樣中文輸入法
+// 開著也能直接用 WASD 走動，不用先切回英文輸入法。
+const MOVE_KEYS = ["KeyW", "KeyA", "KeyS", "KeyD", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space", "KeyE"];
+const CHOICE_KEYS = ["Digit1", "Digit2", "Digit3", "Digit4"];
 
 window.addEventListener("keydown", (e) => {
   // 結局畫面填「完成證明」的姓名/信箱等輸入框時，不要攔截 WASD/E/空白鍵，
@@ -122,18 +125,18 @@ window.addEventListener("keydown", (e) => {
   const activeTag = document.activeElement && document.activeElement.tagName;
   if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
 
-  const k = e.key.toLowerCase();
+  const k = e.code;
   if (MOVE_KEYS.includes(k)) e.preventDefault();
   if (!keys[k]) keysEdge[k] = true;
   keys[k] = true;
 
   if (state && state.dialogue) {
-    if (k === " " || k === "enter" || k === "e") handleDialogueAdvance();
-    if (["1", "2", "3", "4"].includes(k)) handleChoiceKey(parseInt(k, 10) - 1);
+    if (k === "Space" || k === "Enter" || k === "KeyE") handleDialogueAdvance();
+    if (CHOICE_KEYS.includes(k)) handleChoiceKey(CHOICE_KEYS.indexOf(k));
   }
 });
 window.addEventListener("keyup", (e) => {
-  keys[e.key.toLowerCase()] = false;
+  keys[e.code] = false;
 });
 
 // 滑鼠直接點角色/物件：不用先走過去、也不用按 E，點到就直接開對話——
@@ -160,10 +163,10 @@ function updateMovement() {
     dy = touchJoystick.dy;
     mag = Math.min(1, Math.hypot(dx, dy));
   } else {
-    if (keys["w"] || keys["arrowup"]) dy = -1;
-    if (keys["s"] || keys["arrowdown"]) dy = 1;
-    if (keys["a"] || keys["arrowleft"]) dx = -1;
-    if (keys["d"] || keys["arrowright"]) dx = 1;
+    if (keys["KeyW"] || keys["ArrowUp"]) dy = -1;
+    if (keys["KeyS"] || keys["ArrowDown"]) dy = 1;
+    if (keys["KeyA"] || keys["ArrowLeft"]) dx = -1;
+    if (keys["KeyD"] || keys["ArrowRight"]) dx = 1;
   }
 
   const len = Math.hypot(dx, dy) || 1;
@@ -612,7 +615,7 @@ function loop(time) {
   if (!introOpen && !endingOpen && !confirmOpen) {
     if (!state.dialogue) {
       updateMovement();
-      if (keysEdge["e"]) tryInteract();
+      if (keysEdge["KeyE"]) tryInteract();
     }
     if (transitionCooldown > 0) transitionCooldown--;
     render(time);
