@@ -403,6 +403,29 @@ function submitConfigured() {
   return !!(SUBMIT_CONFIG.FORM_ACTION && SUBMIT_CONFIG.FIELDS.ext);
 }
 
+// 記住「這組任務代號送出過了」，同一組資料（姓名/分機/日期/兩案結局都相同）
+// 不用因為玩家重新整理、走回兌獎畫面又按一次，就在表單裡多一筆一模一樣的紀錄。
+// 證明卡片還是照樣顯示、可以截圖，只是不會再打一次網路請求。
+function loadSubmittedCodes() {
+  try {
+    return JSON.parse(localStorage.getItem("cs_submitted_codes")) || [];
+  } catch (e) {
+    return [];
+  }
+}
+function markCodeSubmitted(code) {
+  try {
+    const codes = loadSubmittedCodes();
+    if (!codes.includes(code)) {
+      codes.push(code);
+      localStorage.setItem("cs_submitted_codes", JSON.stringify(codes));
+    }
+  } catch (e) {}
+}
+function isCodeSubmitted(code) {
+  return loadSubmittedCodes().includes(code);
+}
+
 function simpleCode(str) {
   let h = 0;
   for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
@@ -453,6 +476,12 @@ function generateCert() {
     return;
   }
 
+  if (isCodeSubmitted(code)) {
+    document.getElementById("certGenerateBtn").disabled = true;
+    setCertStatus("✅ 這組資料先前已經登記過了，不用再送一次，畫面可以直接截圖至政風室兌獎。", "ok");
+    return;
+  }
+
   document.getElementById("certGenerateBtn").disabled = true;
   setCertStatus("登記中…", "");
 
@@ -474,6 +503,7 @@ function generateCert() {
     body: body.toString(),
   })
     .then(() => {
+      markCodeSubmitted(code);
       setCertStatus("✅ 登記完成，感謝參與！請截圖上方完成證明至政風室兌獎。", "ok");
     })
     .catch((err) => {
