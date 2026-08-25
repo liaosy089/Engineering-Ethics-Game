@@ -22,7 +22,7 @@ const PORTRAITS = {
 const SPRITES = {
   player: "assets/characters/sprites/player.jpg",
   xiaofeng: "assets/characters/sprites/xiaofeng.jpg",
-  chief: "assets/characters/sprites/chief.jpg",
+  chief: "assets/characters/sprites/chief.jpg?v=2",
   colleague: "assets/characters/sprites/colleague.jpg",
   supervisor: "assets/characters/sprites/supervisor.jpg",
   contractor: "assets/characters/sprites/contractor.jpg",
