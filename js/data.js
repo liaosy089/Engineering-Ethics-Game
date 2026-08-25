@@ -7,7 +7,7 @@
 const PORTRAITS = {
   player: "assets/characters/player.jpg",
   xiaofeng: "assets/characters/xiaofeng.jpg",
-  chief: "assets/characters/chief.jpg",
+  chief: "assets/characters/chief.jpg?v=2",
   colleague: "assets/characters/colleague.jpg",
   supervisor: "assets/characters/supervisor.jpg",
   contractor: "assets/characters/contractor.jpg",
